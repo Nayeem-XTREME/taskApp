@@ -1,7 +1,4 @@
 // CRUD 
-// const mongodb = require('mongodb');
-// const MongoClient = mongodb.MongoClient;
-// const ObjectID = mongodb.ObjectID;
 
 // Deconstructing
 const { MongoClient, ObjectID } = require('mongodb');
@@ -14,30 +11,33 @@ MongoClient.connect(connectionUrl, { useNewUrlParser: true, useUnifiedTopology: 
         console.log('Unable to connect to database');
     } else {
         const db = client.db(dbName);
-        
-        // db.collection('users').findOne({_id: new ObjectID('5fb6be958740b11ca890cb42')}, (error, result) => {
+
+        // Using callback
+        // db.collection('users').updateOne({
+        //     _id: new ObjectID('5fb6bc9a95d9f10d1472d020')
+        // }, {
+        //     $set: {
+        //         name: 'Bakar Siddik (ABS)'
+        //     }
+        // }, (error, res) => {
         //     if (error) {
-        //         console.log('Unable to fetch');
+        //         console.log('Unable to update!');
         //     } else {
-        //         console.log(result);
+        //         console.log(res);
         //     }
         // })
 
-        // 'find' returns a 'Cursor'
-        db.collection('users').find({ age: 25 }).toArray((err, res) => {
-            if (err) {
-                console.log('Unable to fetch');
-            } else {
-                console.log(res);
+        // Using Promise
+        db.collection('users').updateOne({
+            _id: new ObjectID('5fb6bc9a95d9f10d1472d020')
+        }, {
+            $set: {
+                name: 'Abu Bakar Siddik'
             }
-        })
-
-        db.collection('users').find({ age: 25 }).count((err, res) => {
-            if (err) {
-                console.log('Unable to fetch');
-            } else {
-                console.log(res);
-            }
+        }).then((res) => {
+            console.log(res)
+        }).catch((err) => {
+            console.log(err);
         })
 
     }
