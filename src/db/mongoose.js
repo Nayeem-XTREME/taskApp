@@ -29,16 +29,48 @@ const User = mongoose.model('User', {
                 throw new Error('Invalid email address!');
             }
         }
+    },
+    password: {
+        type: String,
+        required: true,
+        minlength: 7,
+        trim: true,
+        validate(value) {
+            if (value.toLowerCase().includes('password')) {
+                throw new Error(`Password can't contain the word 'password'!`);
+            }
+        }
+    }
+})
+
+const Task = mongoose.model('Task', {
+    description: {
+        type: String,
+        required: true,
+        trim: true
+    },
+    completed: {
+        type: Boolean,
+        default: false
     }
 })
 
 // Create a new user
 const me = new User({
     name: 'Nayeem',
-    email: 'nayeem@gMail.com '
-})
+    email: 'nayeem@gMail.com ',
+    password: 'NayeemNiazMorshed'
+});
 
 // Save into database
 me.save()
 .then(() => console.log(me))
-.catch(err => console.log(err))
+.catch(err => console.log(err));
+
+const task = new Task({
+    description: 'Cleaning garder'
+})
+
+task.save()
+.then(() => console.log(task))
+.catch(err => console.log(err));
