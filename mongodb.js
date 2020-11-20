@@ -12,33 +12,17 @@ MongoClient.connect(connectionUrl, { useNewUrlParser: true, useUnifiedTopology: 
     } else {
         const db = client.db(dbName);
 
-        // Using callback
-        // db.collection('users').updateOne({
-        //     _id: new ObjectID('5fb6bc9a95d9f10d1472d020')
-        // }, {
-        //     $set: {
-        //         name: 'Bakar Siddik (ABS)'
-        //     }
-        // }, (error, res) => {
-        //     if (error) {
-        //         console.log('Unable to update!');
-        //     } else {
-        //         console.log(res);
-        //     }
-        // })
-
         // Using Promise
-        db.collection('users').updateOne({
-            _id: new ObjectID('5fb6bc9a95d9f10d1472d020')
+
+        db.collection('users').updateMany({
+            age: 25
         }, {
             $set: {
-                name: 'Abu Bakar Siddik'
+                age: 26
             }
-        }).then((res) => {
-            console.log(res)
-        }).catch((err) => {
-            console.log(err);
         })
+        .then(res => console.log(res))
+        .catch(err => console.log(err));
 
     }
 })
