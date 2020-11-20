@@ -13,6 +13,15 @@ const User = mongoose.model('User', {
     }
 })
 
+const Task = mongoose.model('Task', {
+    description: {
+        type: String
+    },
+    completed: {
+        type: Boolean
+    }
+})
+
 // Create a new user
 const me = new User({
     name: 'Niaz Morshed',
@@ -23,3 +32,12 @@ const me = new User({
 me.save()
 .then(() => console.log(me))
 .catch(err => console.log(err))
+
+const task = new Task({
+    description: 'Cleaning garder',
+    completed: false
+})
+
+task.save()
+.then(() => console.log(task))
+.catch(err => console.log(err));
