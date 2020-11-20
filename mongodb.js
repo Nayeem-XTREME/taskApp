@@ -13,13 +13,8 @@ MongoClient.connect(connectionUrl, { useNewUrlParser: true, useUnifiedTopology: 
         const db = client.db(dbName);
 
         // Using Promise
-
-        db.collection('users').updateMany({
-            age: 25
-        }, {
-            $set: {
-                age: 26
-            }
+        db.collection('users').deleteMany({
+            age: 27
         })
         .then(res => console.log(res))
         .catch(err => console.log(err));
