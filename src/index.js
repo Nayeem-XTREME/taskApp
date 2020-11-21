@@ -9,6 +9,26 @@ const port = process.env.PORT || 3000;
 const json = express.json();
 app.use(json);
 
+// GET
+app.get('/user', (req, res) => {
+    User.find({})
+    .then(users => res.send(users))
+    .catch(err => res.status(500).send(err));
+})
+
+app.get('/user/:id', (req, res) => {
+    User.findById(req.params.id)
+    .then(user => {
+        if (!user) {
+            res.status(404).send();
+        } else {
+            res.send(user);
+        }
+    })
+    .catch(err => res.send(err));
+})
+
+// POST
 app.post('/user', (req, res) => {
     const user = new User(req.body);
 
