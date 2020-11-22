@@ -85,6 +85,55 @@ app.post('/task', async (req, res) => {
 
 })
 
+// UPDATES
+app.patch('/user/:id', async (req, res) => {
+
+    const updates = Object.keys(req.body);
+    const allowedUpdates = ['name', 'email', 'password', 'age'];
+    const isValid = updates.every((x) => {
+        return allowedUpdates.includes(x);
+    })
+
+    if (!isValid) {
+        res.status(400).send({ error: 'Invalid updates' });
+    } else {
+        try {
+            const user = await User.findByIdAndUpdate(req.params.id, req.body, {new: true, runValidators: true});
+            if (!user) {
+                res.status(404).send();
+            } else {
+                res.send(user);
+            }
+        } catch (error) {
+            res.status(400).send(error);
+        }
+    }
+
+})
+
+app.patch('/task/:id', async (req, res) => {
+    const updates = Object.keys(req.body);
+    const allowedUpdates = ['description', 'completed'];
+    const isValid = updates.every((x) => {
+        return allowedUpdates.includes(x);
+    })
+
+    if (!isValid) {
+        res.status(400).send({ error: 'Invalid updates' });
+    } else {
+        try {
+            const task = await Task.findByIdAndUpdate(req.params.id, req.body, {new: true, runValidators: true});
+            if (!task) {
+                res.status(404).send();
+            } else {
+                res.send(task);
+            }
+        } catch (error) {
+            res.status(400).send(error);
+        }
+    }
+})
+
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
 })
