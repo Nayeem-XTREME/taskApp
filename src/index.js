@@ -134,6 +134,35 @@ app.patch('/task/:id', async (req, res) => {
     }
 })
 
+// DELETE
+app.delete('/user/:id', async (req, res) => {
+    try {
+        const user = await User.findByIdAndDelete(req.params.id);
+
+        if(!user) {
+            res.status(404).send();
+        } else {
+            res.send(user);
+        }
+    } catch (error) {
+        res.status(500).send(error);
+    }
+})
+
+app.delete('/task/:id', async (req, res) => {
+    try {
+        const task = await Task.findByIdAndDelete(req.params.id);
+
+        if(!task) {
+            res.status(404).send();
+        } else {
+            res.send(task);
+        }
+    } catch (error) {
+        res.status(500).send(error);
+    }
+})
+
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
 })
