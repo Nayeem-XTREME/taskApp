@@ -1,7 +1,6 @@
 const express = require('express');
 const User = require('./models/user');
 const Task = require('./models/task');
-const { get } = require('mongoose');
 require('./db/mongoose');
 
 const app = express();
@@ -11,57 +10,79 @@ const json = express.json();
 app.use(json);
 
 // GETS
-app.get('/user', (req, res) => {
-    User.find({})
-    .then(users => res.send(users))
-    .catch(err => res.status(500).send(err));
+app.get('/user', async (req, res) => {
+
+    try {
+        const users = await User.find({});
+        res.status(200).send(users);
+    } catch (error) {
+        res.status(500).send(error);
+    }
+
 })
 
-app.get('/user/:id', (req, res) => {
-    User.findById(req.params.id)
-    .then(user => {
-        if (!user) {
+app.get('/user/:id', async (req, res) => {
+
+    try {
+        const user = await User.findById(req.params.id);
+        if (!user)
             res.status(404).send();
-        } else {
+        else
             res.send(user);
-        }
-    })
-    .catch(err => res.status(500).send(err));
+    } catch (error) {
+        res.status(500).send(error);
+    }
+
 })
 
-app.get('/task', (req, res) => {
-    Task.find({})
-    .then(tasks => res.send(tasks))
-    .catch(err => res.status(500).send(err));
+app.get('/task', async (req, res) => {
+
+    try {
+        const tasks = await Task.find({});
+        res.status(200).send(tasks);
+    } catch (error) {
+        res.status(500).send(error)
+    }
+
 })
 
-app.get('/task/:id', (req, res) => {
-    Task.findById(req.params.id)
-    .then(task => {
-        if (!task) {
+app.get('/task/:id', async (req, res) => {
+
+    try {
+        const task = await Task.findById(req.params.id);
+        if (!task)
             res.status(404).send();
-        } else {
+        else 
             res.send(task);
-        }
-    })
-    .catch(err => res.status(500).send(err));
+    } catch (error) {
+        res.status(500).send(error)
+    }
+
 })
 
 // POSTS
-app.post('/user', (req, res) => {
+app.post('/user', async (req, res) => {
     const user = new User(req.body);
 
-    user.save()
-    .then(() => res.status(201).send(user))
-    .catch(err => res.status(400).send(err));
+    try {
+        await user.save();
+        res.status(201).send(user);
+    } catch (error) {
+        res.status(400).send(error);
+    }
+
 })
 
-app.post('/task', (req, res) => {
+app.post('/task', async (req, res) => {
     const task = new Task(req.body);
 
-    task.save()
-    .then(() => res.status(201).send(task))
-    .catch(err => res.status(400).send(err));
+    try {
+        await task.save();
+        res.status(201).send(task);
+    } catch (error) {
+        res.status(400).send(error)
+    }
+
 })
 
 app.listen(port, () => {
