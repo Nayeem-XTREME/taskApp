@@ -18,6 +18,7 @@ const userSchema = new mongoose.Schema({
     },
     email: {
         type: String,
+        unique: true,
         required: true,
         trim: true,
         lowercase: true,
@@ -40,6 +41,25 @@ const userSchema = new mongoose.Schema({
     }
 })
 
+userSchema.statics.findByCredentials = async (email, password) => {
+    const user = await User.findOne({
+        email: email
+    });
+
+    if (!user) {
+        throw new Error('No user found');
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+
+    if (!isMatch) {
+        throw new Error('Password do not match!');
+    }
+
+    return user;
+}
+
+// Password hashing
 userSchema.pre('save', async function(next) {
     const user = this;
 
