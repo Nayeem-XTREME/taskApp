@@ -1,16 +1,13 @@
 const express = require('express');
 const User = require('../models/user');
+const auth = require('../middleware/auth');
 const router = new express.Router();
 
 // GETS
-router.get('/user', async (req, res) => {
+// Inserting Middleware 'auth'
+router.get('/user/me', auth, async (req, res) => {
 
-    try {
-        const users = await User.find({});
-        res.status(200).send(users);
-    } catch (error) {
-        res.status(500).send(error);
-    }
+    res.send(req.user);
 
 })
 
